@@ -9,38 +9,192 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppTradingBotsRouteImport } from './routes/app.trading-bots'
+import { Route as AppRiskCalculatorRouteImport } from './routes/app.risk-calculator'
+import { Route as AppReportsRouteImport } from './routes/app.reports'
+import { Route as AppDtraderRouteImport } from './routes/app.dtrader'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppCopyTradingRouteImport } from './routes/app.copy-trading'
+import { Route as AppChartsRouteImport } from './routes/app.charts'
+import { Route as AppBulkTraderRouteImport } from './routes/app.bulk-trader'
+import { Route as AppBotBuilderRouteImport } from './routes/app.bot-builder'
+import { Route as AppAnalysisToolRouteImport } from './routes/app.analysis-tool'
 
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTradingBotsRoute = AppTradingBotsRouteImport.update({
+  id: '/trading-bots',
+  path: '/trading-bots',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRiskCalculatorRoute = AppRiskCalculatorRouteImport.update({
+  id: '/risk-calculator',
+  path: '/risk-calculator',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDtraderRoute = AppDtraderRouteImport.update({
+  id: '/dtrader',
+  path: '/dtrader',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCopyTradingRoute = AppCopyTradingRouteImport.update({
+  id: '/copy-trading',
+  path: '/copy-trading',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChartsRoute = AppChartsRouteImport.update({
+  id: '/charts',
+  path: '/charts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBulkTraderRoute = AppBulkTraderRouteImport.update({
+  id: '/bulk-trader',
+  path: '/bulk-trader',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBotBuilderRoute = AppBotBuilderRouteImport.update({
+  id: '/bot-builder',
+  path: '/bot-builder',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalysisToolRoute = AppAnalysisToolRouteImport.update({
+  id: '/analysis-tool',
+  path: '/analysis-tool',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
+  '/app/bot-builder': typeof AppBotBuilderRoute
+  '/app/bulk-trader': typeof AppBulkTraderRoute
+  '/app/charts': typeof AppChartsRoute
+  '/app/copy-trading': typeof AppCopyTradingRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/dtrader': typeof AppDtraderRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/risk-calculator': typeof AppRiskCalculatorRoute
+  '/app/trading-bots': typeof AppTradingBotsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
+  '/app/bot-builder': typeof AppBotBuilderRoute
+  '/app/bulk-trader': typeof AppBulkTraderRoute
+  '/app/charts': typeof AppChartsRoute
+  '/app/copy-trading': typeof AppCopyTradingRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/dtrader': typeof AppDtraderRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/risk-calculator': typeof AppRiskCalculatorRoute
+  '/app/trading-bots': typeof AppTradingBotsRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
+  '/app/bot-builder': typeof AppBotBuilderRoute
+  '/app/bulk-trader': typeof AppBulkTraderRoute
+  '/app/charts': typeof AppChartsRoute
+  '/app/copy-trading': typeof AppCopyTradingRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/dtrader': typeof AppDtraderRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/risk-calculator': typeof AppRiskCalculatorRoute
+  '/app/trading-bots': typeof AppTradingBotsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/analysis-tool'
+    | '/app/bot-builder'
+    | '/app/bulk-trader'
+    | '/app/charts'
+    | '/app/copy-trading'
+    | '/app/dashboard'
+    | '/app/dtrader'
+    | '/app/reports'
+    | '/app/risk-calculator'
+    | '/app/trading-bots'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/analysis-tool'
+    | '/app/bot-builder'
+    | '/app/bulk-trader'
+    | '/app/charts'
+    | '/app/copy-trading'
+    | '/app/dashboard'
+    | '/app/dtrader'
+    | '/app/reports'
+    | '/app/risk-calculator'
+    | '/app/trading-bots'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/analysis-tool'
+    | '/app/bot-builder'
+    | '/app/bulk-trader'
+    | '/app/charts'
+    | '/app/copy-trading'
+    | '/app/dashboard'
+    | '/app/dtrader'
+    | '/app/reports'
+    | '/app/risk-calculator'
+    | '/app/trading-bots'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +202,119 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/trading-bots': {
+      id: '/app/trading-bots'
+      path: '/trading-bots'
+      fullPath: '/app/trading-bots'
+      preLoaderRoute: typeof AppTradingBotsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/risk-calculator': {
+      id: '/app/risk-calculator'
+      path: '/risk-calculator'
+      fullPath: '/app/risk-calculator'
+      preLoaderRoute: typeof AppRiskCalculatorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/reports': {
+      id: '/app/reports'
+      path: '/reports'
+      fullPath: '/app/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dtrader': {
+      id: '/app/dtrader'
+      path: '/dtrader'
+      fullPath: '/app/dtrader'
+      preLoaderRoute: typeof AppDtraderRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/copy-trading': {
+      id: '/app/copy-trading'
+      path: '/copy-trading'
+      fullPath: '/app/copy-trading'
+      preLoaderRoute: typeof AppCopyTradingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/charts': {
+      id: '/app/charts'
+      path: '/charts'
+      fullPath: '/app/charts'
+      preLoaderRoute: typeof AppChartsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/bulk-trader': {
+      id: '/app/bulk-trader'
+      path: '/bulk-trader'
+      fullPath: '/app/bulk-trader'
+      preLoaderRoute: typeof AppBulkTraderRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/bot-builder': {
+      id: '/app/bot-builder'
+      path: '/bot-builder'
+      fullPath: '/app/bot-builder'
+      preLoaderRoute: typeof AppBotBuilderRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/analysis-tool': {
+      id: '/app/analysis-tool'
+      path: '/analysis-tool'
+      fullPath: '/app/analysis-tool'
+      preLoaderRoute: typeof AppAnalysisToolRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAnalysisToolRoute: typeof AppAnalysisToolRoute
+  AppBotBuilderRoute: typeof AppBotBuilderRoute
+  AppBulkTraderRoute: typeof AppBulkTraderRoute
+  AppChartsRoute: typeof AppChartsRoute
+  AppCopyTradingRoute: typeof AppCopyTradingRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppDtraderRoute: typeof AppDtraderRoute
+  AppReportsRoute: typeof AppReportsRoute
+  AppRiskCalculatorRoute: typeof AppRiskCalculatorRoute
+  AppTradingBotsRoute: typeof AppTradingBotsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAnalysisToolRoute: AppAnalysisToolRoute,
+  AppBotBuilderRoute: AppBotBuilderRoute,
+  AppBulkTraderRoute: AppBulkTraderRoute,
+  AppChartsRoute: AppChartsRoute,
+  AppCopyTradingRoute: AppCopyTradingRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppDtraderRoute: AppDtraderRoute,
+  AppReportsRoute: AppReportsRoute,
+  AppRiskCalculatorRoute: AppRiskCalculatorRoute,
+  AppTradingBotsRoute: AppTradingBotsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
