@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
       { title: "Digittool — Automated Trading Bots, Analysis & Copy Trading" },
       { name: "description", content: "Your all-in-one workspace for automated trading, smart bots, and real-time market insights. Trusted by 50,000+ traders worldwide." },
       { property: "og:title", content: "Digittool — Automated Trading Bots, Analysis & Copy Trading" },
-      { property: "og:description", content: "Automate strategies, follow top performers, and manage risk from one dashboard." },
+      { property: "og:description", content: "Your all-in-one workspace for automated trading, smart bots, and real-time market insights. Trusted by 50,000+ traders worldwide." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
