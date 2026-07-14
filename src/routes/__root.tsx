@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Dollarprinter — Automated Trading Bots, Analysis & Copy Trading" },
+      { title: "Digittool — Automated Trading Bots, Analysis & Copy Trading" },
       { name: "description", content: "Your all-in-one workspace for automated trading, smart bots, and real-time market insights." },
     ],
     links: [
