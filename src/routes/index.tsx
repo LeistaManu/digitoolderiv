@@ -38,12 +38,13 @@ function LandingPage() {
           <span className="text-gradient-brand">Digit</span>
           <span className="text-foreground/90">tool</span>
         </div>
-        <Link
-          to="/app/bot-builder"
+        <a
+          href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
           className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition"
         >
           Login Now <ArrowRight className="h-4 w-4" />
-        </Link>
+        </a>
+
       </nav>
 
       {/* Hero */}
