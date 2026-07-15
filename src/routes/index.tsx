@@ -40,6 +40,8 @@ function LandingPage() {
         </div>
         <a
           href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition"
         >
           Login Now <ArrowRight className="h-4 w-4" />
@@ -69,6 +71,8 @@ function LandingPage() {
           </Link>
           <a
             href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-3 text-sm font-semibold text-background hover:opacity-95 transition"
           >
             Old Account Login
