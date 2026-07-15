@@ -38,12 +38,13 @@ function LandingPage() {
           <span className="text-gradient-brand">Digit</span>
           <span className="text-foreground/90">tool</span>
         </div>
-        <Link
-          to="/app/bot-builder"
+        <a
+          href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
           className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary transition"
         >
           Login Now <ArrowRight className="h-4 w-4" />
-        </Link>
+        </a>
+
       </nav>
 
       {/* Hero */}
@@ -67,18 +68,21 @@ function LandingPage() {
             Start Trading Now <ArrowRight className="h-4 w-4" />
           </Link>
           <a
-            href="https://www.dollarprinter.com/login"
+            href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-3 text-sm font-semibold text-background hover:opacity-95 transition"
           >
             Old Account Login
           </a>
-          <Link
-            to="/app/bot-builder"
+          <a
+            href="https://track.deriv.com/_SBDSiGetH571hit6RV3zsGNd7ZgqdRLk/1/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold hover:opacity-95 transition"
           >
             Sign Up
-          </Link>
+          </a>
         </div>
+
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-cyan" /> No Credit Card Required</span>
