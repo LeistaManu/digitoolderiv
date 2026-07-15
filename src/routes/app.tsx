@@ -98,7 +98,9 @@ function AppLayout() {
       </header>
 
       <main className="max-w-[1600px] mx-auto p-4 md:p-6">
-        <Outlet />
+        <div key={pathname} className="animate-page-in">
+          <Outlet />
+        </div>
       </main>
 
       <footer className="border-t border-white/10 mt-10 py-6 text-center text-xs text-white/40">
