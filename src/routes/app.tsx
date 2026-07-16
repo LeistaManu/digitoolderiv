@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Blocks, LineChart, Bot, Layers, Activity, FileBarChart, Calculator, Copy, TrendingUp, Phone, LogIn, UserPlus } from "lucide-react";
+import { DollarRain } from "@/components/DollarRain";
 
 export const Route = createFileRoute("/app")({
   head: () => ({
@@ -28,6 +29,7 @@ function AppLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <div className="min-h-screen bg-[#0a0e1a] text-white">
+      <DollarRain />
       {/* Marquee banner */}
       <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white text-xs md:text-sm font-semibold overflow-hidden whitespace-nowrap py-2">
         <div className="inline-block animate-[scroll_30s_linear_infinite] px-4">
