@@ -1,68 +1,154 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Layers, Play } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/app/bulk-trader")({
   head: () => ({ meta: [{ title: "Bulk Trader — Digittool" }] }),
   component: BulkTrader,
 });
 
+const MARKETS = [
+  "Volatility 100 Index",
+  "Volatility 75 Index",
+  "Volatility 50 Index",
+  "Volatility 25 Index",
+  "Volatility 10 Index",
+  "Boom 500 Index",
+  "Crash 500 Index",
+];
+const TRADE_TYPES = ["Even/Odd", "Rise/Fall", "Over/Under", "Matches/Differs"];
+
 function BulkTrader() {
-  const [rows, setRows] = useState([
-    { market: "Volatility 10", type: "Rise", stake: 1, duration: 5, take: 10, stop: 5 },
-    { market: "Volatility 25", type: "Fall", stake: 2, duration: 5, take: 12, stop: 5 },
-    { market: "Volatility 75", type: "Rise", stake: 1, duration: 3, take: 8, stop: 4 },
-    { market: "Boom 500", type: "Rise", stake: 5, duration: 10, take: 20, stop: 10 },
-  ]);
+  const [market, setMarket] = useState(MARKETS[0]);
+  const [tradeType, setTradeType] = useState("Even/Odd");
+  const [ticksCount, setTicksCount] = useState(1000);
+  const [ticks, setTicks] = useState(1);
+  const [stake, setStake] = useState(0.5);
+  const [trades, setTrades] = useState(1);
+  const [current, setCurrent] = useState(489.39);
+  const [dist, setDist] = useState<number[]>([10.8, 9.6, 8.6, 9.6, 9.3, 9.9, 11.4, 9.5, 10.3, 11.0]);
+  const [history, setHistory] = useState<("E" | "O")[]>(["E", "O", "O", "O", "O", "O", "O", "O"]);
+  const evenPct = 50.4;
+  const oddPct = 49.6;
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrent((c) => +(c + (Math.random() - 0.5) * 3).toFixed(2));
+      const nd = Math.floor(Math.random() * 10);
+      setHistory((h) => [(nd % 2 === 0 ? "E" : "O") as "E" | "O", ...h].slice(0, 8));
+      setDist((d) => d.map((v) => Math.max(6, Math.min(14, v + (Math.random() - 0.5) * 0.3))));
+    }, 1300);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Market + trade type */}
+      <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="w-6 h-6 text-cyan-400" /> Bulk Trader</h1>
-          <p className="text-white/60 text-sm">Fire multiple trades simultaneously across markets.</p>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">Market</div>
+          <select
+            value={market}
+            onChange={(e) => setMarket(e.target.value)}
+            className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center"
+          >
+            {MARKETS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
         </div>
-        <button className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold text-sm inline-flex items-center gap-2">
-          <Play className="w-4 h-4" /> Execute All
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">Trade Type</div>
+          <select
+            value={tradeType}
+            onChange={(e) => setTradeType(e.target.value)}
+            className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center"
+          >
+            {TRADE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {/* Number of ticks */}
+      <div>
+        <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">Number of Ticks</div>
+        <input
+          type="number"
+          value={ticksCount}
+          onChange={(e) => setTicksCount(Number(e.target.value))}
+          className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center"
+        />
+      </div>
+
+      {/* Current tick */}
+      <div className="text-center space-y-1">
+        <div className="text-[11px] font-bold uppercase tracking-widest text-white/50">Current Tick</div>
+        <div className="text-5xl font-black text-blue-400 tabular-nums">{current.toFixed(2)}</div>
+      </div>
+
+      {/* Digit circles */}
+      <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
+        {dist.map((pct, d) => (
+          <div key={d} className="flex flex-col items-center">
+            <div className="relative w-16 h-16 rounded-full border-4 border-slate-300 grid place-items-center bg-white text-slate-900">
+              <div className="absolute inset-0 rounded-full" style={{
+                background: `conic-gradient(#64748b ${pct * 3.6}deg, transparent 0)`,
+                maskImage: "radial-gradient(circle, transparent 55%, black 56%)",
+                WebkitMaskImage: "radial-gradient(circle, transparent 55%, black 56%)",
+              }} />
+              <div className="relative font-black text-lg">{d}</div>
+            </div>
+            <div className="text-xs font-semibold mt-1 text-white/80">{pct.toFixed(2)}%</div>
+          </div>
+        ))}
+      </div>
+
+      {/* History strip */}
+      <div className="flex justify-center gap-1.5">
+        {history.map((h, i) => (
+          <div
+            key={i}
+            className={`w-8 h-8 rounded grid place-items-center font-black text-white text-sm ${
+              h === "E" ? "bg-teal-500" : "bg-red-500"
+            }`}
+          >
+            {h}
+          </div>
+        ))}
+      </div>
+
+      {/* Inputs */}
+      <div className="grid md:grid-cols-3 gap-4">
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">Ticks</div>
+          <input type="number" value={ticks} onChange={(e) => setTicks(+e.target.value)}
+            className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center" />
+        </div>
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">Stake</div>
+          <input type="number" step="0.1" value={stake} onChange={(e) => setStake(+e.target.value)}
+            className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center" />
+        </div>
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2">No of Trades</div>
+          <input type="number" value={trades} onChange={(e) => setTrades(+e.target.value)}
+            className="w-full bg-white text-slate-900 font-bold rounded-lg px-4 py-3 text-center" />
+        </div>
+      </div>
+
+      {/* Even / Odd big buttons */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <button className="rounded-lg bg-teal-500 hover:bg-teal-400 text-white font-black text-xl py-6 shadow-lg transition-transform hover:scale-[1.02]">
+          <div>Even</div>
+          <div className="text-lg font-bold mt-1 opacity-90">{evenPct.toFixed(2)}%</div>
+        </button>
+        <button className="rounded-lg bg-red-500 hover:bg-red-400 text-white font-black text-xl py-6 shadow-lg transition-transform hover:scale-[1.02]">
+          <div>Odd</div>
+          <div className="text-lg font-bold mt-1 opacity-90">{oddPct.toFixed(2)}%</div>
         </button>
       </div>
 
-      <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-white/5 text-white/60 text-xs uppercase">
-            <tr>
-              <th className="text-left p-3">Market</th>
-              <th className="text-left p-3">Type</th>
-              <th className="text-left p-3">Stake</th>
-              <th className="text-left p-3">Duration (t)</th>
-              <th className="text-left p-3">Take Profit</th>
-              <th className="text-left p-3">Stop Loss</th>
-              <th className="p-3"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {rows.map((r, i) => (
-              <tr key={i}>
-                <td className="p-3">{r.market}</td>
-                <td className="p-3">
-                  <span className={`px-2 py-0.5 rounded text-xs font-semibold ${r.type === "Rise" ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}`}>{r.type}</span>
-                </td>
-                <td className="p-3">${r.stake}</td>
-                <td className="p-3">{r.duration}</td>
-                <td className="p-3 text-emerald-400">${r.take}</td>
-                <td className="p-3 text-red-400">${r.stop}</td>
-                <td className="p-3 text-right">
-                  <button onClick={() => setRows(rows.filter((_, x) => x !== i))} className="text-xs text-red-400 hover:underline">Remove</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="p-3 border-t border-white/10">
-          <button onClick={() => setRows([...rows, { market: "Volatility 50", type: "Rise", stake: 1, duration: 5, take: 10, stop: 5 }])} className="text-sm text-cyan-400 hover:underline">
-            + Add trade row
-          </button>
-        </div>
+      <div className="pt-2">
+        <button className="px-4 py-2 rounded-lg bg-yellow-400 text-slate-900 font-bold text-xs">
+          Risk Disclaimer
+        </button>
       </div>
     </div>
   );
