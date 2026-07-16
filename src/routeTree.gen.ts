@@ -19,9 +19,7 @@ import { Route as AppDtraderRouteImport } from './routes/app.dtrader'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCopyTradingRouteImport } from './routes/app.copy-trading'
 import { Route as AppChartsRouteImport } from './routes/app.charts'
-import { Route as AppBulkTraderRouteImport } from './routes/app.bulk-trader'
 import { Route as AppBotBuilderRouteImport } from './routes/app.bot-builder'
-import { Route as AppAnalysisToolRouteImport } from './routes/app.analysis-tool'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -73,28 +71,16 @@ const AppChartsRoute = AppChartsRouteImport.update({
   path: '/charts',
   getParentRoute: () => AppRoute,
 } as any)
-const AppBulkTraderRoute = AppBulkTraderRouteImport.update({
-  id: '/bulk-trader',
-  path: '/bulk-trader',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppBotBuilderRoute = AppBotBuilderRouteImport.update({
   id: '/bot-builder',
   path: '/bot-builder',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppAnalysisToolRoute = AppAnalysisToolRouteImport.update({
-  id: '/analysis-tool',
-  path: '/analysis-tool',
   getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
-  '/app/bulk-trader': typeof AppBulkTraderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -106,9 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
-  '/app/bulk-trader': typeof AppBulkTraderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -122,9 +106,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
-  '/app/bulk-trader': typeof AppBulkTraderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -139,9 +121,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/app/analysis-tool'
     | '/app/bot-builder'
-    | '/app/bulk-trader'
     | '/app/charts'
     | '/app/copy-trading'
     | '/app/dashboard'
@@ -153,9 +133,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app/analysis-tool'
     | '/app/bot-builder'
-    | '/app/bulk-trader'
     | '/app/charts'
     | '/app/copy-trading'
     | '/app/dashboard'
@@ -168,9 +146,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
-    | '/app/analysis-tool'
     | '/app/bot-builder'
-    | '/app/bulk-trader'
     | '/app/charts'
     | '/app/copy-trading'
     | '/app/dashboard'
@@ -258,13 +234,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChartsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/bulk-trader': {
-      id: '/app/bulk-trader'
-      path: '/bulk-trader'
-      fullPath: '/app/bulk-trader'
-      preLoaderRoute: typeof AppBulkTraderRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/bot-builder': {
       id: '/app/bot-builder'
       path: '/bot-builder'
@@ -272,20 +241,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBotBuilderRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/analysis-tool': {
-      id: '/app/analysis-tool'
-      path: '/analysis-tool'
-      fullPath: '/app/analysis-tool'
-      preLoaderRoute: typeof AppAnalysisToolRouteImport
-      parentRoute: typeof AppRoute
-    }
   }
 }
 
 interface AppRouteChildren {
-  AppAnalysisToolRoute: typeof AppAnalysisToolRoute
   AppBotBuilderRoute: typeof AppBotBuilderRoute
-  AppBulkTraderRoute: typeof AppBulkTraderRoute
   AppChartsRoute: typeof AppChartsRoute
   AppCopyTradingRoute: typeof AppCopyTradingRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -297,9 +257,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAnalysisToolRoute: AppAnalysisToolRoute,
   AppBotBuilderRoute: AppBotBuilderRoute,
-  AppBulkTraderRoute: AppBulkTraderRoute,
   AppChartsRoute: AppChartsRoute,
   AppCopyTradingRoute: AppCopyTradingRoute,
   AppDashboardRoute: AppDashboardRoute,
