@@ -20,6 +20,7 @@ import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCopyTradingRouteImport } from './routes/app.copy-trading'
 import { Route as AppChartsRouteImport } from './routes/app.charts'
 import { Route as AppBotBuilderRouteImport } from './routes/app.bot-builder'
+import { Route as AppAnalysisToolRouteImport } from './routes/app.analysis-tool'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -76,10 +77,16 @@ const AppBotBuilderRoute = AppBotBuilderRouteImport.update({
   path: '/bot-builder',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalysisToolRoute = AppAnalysisToolRouteImport.update({
+  id: '/analysis-tool',
+  path: '/analysis-tool',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/analysis-tool': typeof AppAnalysisToolRoute
   '/app/bot-builder': typeof AppBotBuilderRoute
   '/app/charts': typeof AppChartsRoute
   '/app/copy-trading': typeof AppCopyTradingRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/app/analysis-tool'
     | '/app/bot-builder'
     | '/app/charts'
     | '/app/copy-trading'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/app/analysis-tool'
     | '/app/bot-builder'
     | '/app/charts'
     | '/app/copy-trading'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
+    | '/app/analysis-tool'
     | '/app/bot-builder'
     | '/app/charts'
     | '/app/copy-trading'
@@ -241,10 +253,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBotBuilderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/analysis-tool': {
+      id: '/app/analysis-tool'
+      path: '/analysis-tool'
+      fullPath: '/app/analysis-tool'
+      preLoaderRoute: typeof AppAnalysisToolRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAnalysisToolRoute: typeof AppAnalysisToolRoute
   AppBotBuilderRoute: typeof AppBotBuilderRoute
   AppChartsRoute: typeof AppChartsRoute
   AppCopyTradingRoute: typeof AppCopyTradingRoute
@@ -257,6 +277,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAnalysisToolRoute: AppAnalysisToolRoute,
   AppBotBuilderRoute: AppBotBuilderRoute,
   AppChartsRoute: AppChartsRoute,
   AppCopyTradingRoute: AppCopyTradingRoute,
