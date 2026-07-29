@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const APP_ID = "33Vxdb9YF1exXgyW3vms1";
-const CLIENT_SECRET = process.env.pat_5907d7ea5dd518319b00b74ff885e9d1c828d2be673b06528305a2e818417f4b!;
+const CLIENT_SECRET = process.env.DERIV_CLIENT_SECRET!;
 
 export default async function handler(
   req: VercelRequest,
