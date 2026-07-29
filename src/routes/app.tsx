@@ -55,7 +55,7 @@ function AppLayout() {
               <Phone className="w-4 h-4 text-cyan-400" />
             </a>
           <a
-  href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/app/dashboard"
+  href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/auth/callback"
   className="px-4 py-1.5 rounded-full border border-white/20 hover:bg-white/10 text-sm inline-flex items-center gap-1.5"
 >
   <LogIn className="w-4 h-4" /> Log in
