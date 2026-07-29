@@ -54,14 +54,14 @@ function AppLayout() {
             <a href="tel:+254700000000" className="w-9 h-9 grid place-items-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10">
               <Phone className="w-4 h-4 text-cyan-400" />
             </a>
-            <a
-              href="https://oauth.deriv.com/oauth2/authorize?app_id=36300"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-full border border-white/20 hover:bg-white/10 text-sm inline-flex items-center gap-1.5"
-            >
-              <LogIn className="w-4 h-4" /> Log in
-            </a>
+           <a
+  href="https://oauth.deriv.com/oauth2/authorize?app_id=36300&l=EN&brand=deriv&redirect_uri=https%3A%2F%2Fwww.digittoolderiv.site%2Fapp%2Fdashboard"
+  target="_self"
+  rel="noopener noreferrer"
+  className="px-4 py-1.5 rounded-full border border-white/20 hover:bg-white/10 text-sm inline-flex items-center gap-1.5"
+>
+  <LogIn className="w-4 h-4" /> Log in
+</a>
             <a
               href="https://track.deriv.com/_SBDSiGetH571hit6RV3zsGNd7ZgqdRLk/1/"
               target="_blank"
