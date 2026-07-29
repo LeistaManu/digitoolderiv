@@ -85,7 +85,7 @@ function LandingPage() {
           <span className="text-foreground/90">tool</span>
         </div>
       <a
-href="https://oauth.deriv.com/oauth2/authorize?app_id=36300&redirect_uri=https://www.digittoolderiv.site/auth/callback"
+href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/auth/callback"
 target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary hover:scale-105 transition-all duration-300 animate-fade-up"
@@ -118,7 +118,7 @@ target="_blank"
             Start Trading Now <ArrowRight className="h-4 w-4" />
           </Link>
          <a
-href="https://oauth.deriv.com/oauth2/authorize?app_id=36300&redirect_uri=https://www.digittoolderiv.site/auth/callback"
+href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/auth/callback"
 target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-3 text-sm font-semibold text-background hover:opacity-95 hover:scale-105 transition-all duration-300"
