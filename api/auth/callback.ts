@@ -1,52 +1,68 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const APP_ID = "33Vxdb9YF1exXgyW3vms1";
-const CLIENT_SECRET = process.env.DERIV_CLIENT_SECRET!;
-
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  try {
-    const { code } = req.query;
 
-    if (!code) {
-      return res.status(400).json({
-        error: "Missing authorization code",
-      });
-    }
+  if(req.method!=="POST"){
 
-    const response = await fetch(
-      "https://api.deriv.com/oauth2/token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          grant_type: "authorization_code",
-          code,
-          app_id: APP_ID,
-          client_secret: CLIENT_SECRET,
-          redirect_uri: "https://www.digittoolderiv.site/auth/callback",
-        }),
-      }
-    );
+    return res.status(405).end();
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(400).json(data);
-    }
-
-    return res.redirect(
-      `https://www.digittoolderiv.site/app/dashboard?access_token=${data.access_token}`
-    );
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      error: "OAuth exchange failed",
-    });
   }
+
+  const {code,verifier}=req.body;
+
+  const body=new URLSearchParams({
+
+    grant_type:"authorization_code",
+
+    client_id:"33Vxdb9YF1exXgyW3vms1",
+
+    code,
+
+    code_verifier:verifier,
+
+    redirect_uri:"https://www.digittoolderiv.site/auth/callback"
+
+  });
+
+  const response=await fetch(
+
+    "https://auth.deriv.com/oauth2/token",
+
+    {
+
+      method:"POST",
+
+      headers:{
+
+        "Content-Type":"application/x-www-form-urlencoded"
+
+      },
+
+      body
+
+    }
+
+  );
+
+  const data=await response.json();
+
+  if(!response.ok){
+
+    return res.status(400).json(data);
+
+  }
+
+  return res.json({
+
+    access_token:data.access_token,
+
+    expires_in:data.expires_in,
+
+    token_type:data.token_type
+
+  });
+
 }
