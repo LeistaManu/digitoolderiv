@@ -76,6 +76,92 @@ function useTypewriter(words: string[]) {
 function LandingPage() {
   const typed = useTypewriter(typewriterPhrases);
   const loop = [...testimonials, ...testimonials];
+  const startDerivLogin = async () => {
+  const array = crypto.getRandomValues(new Uint8Array(64));
+
+  const verifier = Array.from(array)
+    .map(
+      (v) =>
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"[
+          v % 66
+        ]
+    )
+    .join("");
+
+  const hash = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(verifier)
+  );
+
+  const challenge = btoa(
+    String.fromCharCode(...new Uint8Array(hash))
+  )
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const state = crypto.randomUUID();
+
+  sessionStorage.setItem("pkce_verifier", verifier);
+  sessionStorage.setItem("oauth_state", state);
+
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: "33Vxdb9YF1exXgyW3vms1",
+    redirect_uri: "https://www.digittoolderiv.site/auth/callback",
+    scope: "trade",
+    state,
+    code_challenge: challenge,
+    code_challenge_method: "S256",
+  });
+
+  window.location.href =
+    `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+};
+
+const startDerivSignup = async () => {
+  const array = crypto.getRandomValues(new Uint8Array(64));
+
+  const verifier = Array.from(array)
+    .map(
+      (v) =>
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"[
+          v % 66
+        ]
+    )
+    .join("");
+
+  const hash = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(verifier)
+  );
+
+  const challenge = btoa(
+    String.fromCharCode(...new Uint8Array(hash))
+  )
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const state = crypto.randomUUID();
+
+  sessionStorage.setItem("pkce_verifier", verifier);
+  sessionStorage.setItem("oauth_state", state);
+
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: "33Vxdb9YF1exXgyW3vms1",
+    redirect_uri: "https://www.digittoolderiv.site/auth/callback",
+    scope: "trade",
+    state,
+    code_challenge: challenge,
+    code_challenge_method: "S256",
+    prompt: "registration",
+  });
+
+  window.location.href =
+    `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+};
   return (
     <div className="min-h-screen animate-page-in overflow-x-hidden">
       {/* Nav */}
@@ -84,14 +170,12 @@ function LandingPage() {
           <span className="text-gradient-brand">Digit</span>
           <span className="text-foreground/90">tool</span>
         </div>
-      <a
-href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/auth/callback"
-target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary hover:scale-105 transition-all duration-300 animate-fade-up"
-        >
-          Login Now <ArrowRight className="h-4 w-4" />
-        </a>
+     <button
+  onClick={startDerivLogin}
+  className="inline-flex items-center gap-2 rounded-full bg-background border border-border px-5 py-2.5 text-sm font-semibold hover:bg-secondary hover:scale-105 transition-all duration-300 animate-fade-up"
+>
+  Login Now <ArrowRight className="h-4 w-4" />
+</button>
 
       </nav>
 
@@ -117,14 +201,12 @@ target="_blank"
           >
             Start Trading Now <ArrowRight className="h-4 w-4" />
           </Link>
-         <a
-href="https://oauth.deriv.com/oauth2/authorize?app_id=33Vxdb9YF1exXgyW3vms1&redirect_uri=https://www.digittoolderiv.site/auth/callback"
-target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-3 text-sm font-semibold text-background hover:opacity-95 hover:scale-105 transition-all duration-300"
-          >
-            Old Account Login
-          </a>
+        <button
+  onClick={startDerivLogin}
+  className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-3 text-sm font-semibold text-background hover:opacity-95 hover:scale-105 transition-all duration-300"
+>
+  Old Account Login
+</button>
           <a
             href="https://track.deriv.com/_SBDSiGetH571hit6RV3zsGNd7ZgqdRLk/1/"
             target="_blank"
@@ -288,14 +370,12 @@ target="_blank"
               >
                 Start Trading Now <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="https://track.deriv.com/_SBDSiGetH571hit6RV3zsGNd7ZgqdRLk/1/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-4 text-base font-semibold text-background hover:scale-105 transition-all duration-300"
-              >
-                Create Free Account
-              </a>
+             <button
+  onClick={startDerivSignup}
+  className="inline-flex items-center gap-2 rounded-full bg-gradient-gold px-8 py-4 text-base font-semibold text-background hover:scale-105 transition-all duration-300"
+>
+  Create Free Account
+</button>
             </div>
           </div>
         </div>
