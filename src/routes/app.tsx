@@ -52,7 +52,7 @@ async function login() {
 
     const params = new URLSearchParams({
       response_type: "code",
-      client_id: "33Vxdb9Yf1exXgyW3vms1", // OAuth Client ID
+      client_id: "340fKqgQxBtyfOpYwkRmA",
       redirect_uri: "https://digittoolderiv.site/auth/callback",
       scope: "trade account_manage application_read payment",
       state,
