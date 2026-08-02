@@ -15,7 +15,6 @@ import {
   UserPlus,
 } from "lucide-react";
 import { DollarRain } from "@/components/DollarRain";
-import { generatePKCE } from "@/lib/pkce";
 
 export const Route = createFileRoute("/app")({
   head: () => ({
@@ -46,26 +45,9 @@ const nav = [
   { to: "/app/dtrader", label: "DTrader", icon: TrendingUp },
 ];
 
-async function login() {
-  try {
-    const { challenge, state } = await generatePKCE();
-
-    const params = new URLSearchParams({
-      response_type: 'code',
-      client_id: '340fKqgQxBtyfOpYwkRmA',
-      redirect_uri: 'https://digittoolderiv.site/auth/callback',
-      scope: 'trade account_manage application_read payment',
-      state,
-      code_challenge: challenge,
-      code_challenge_method: 'S256',
-    });
-
-    window.location.href =
-      `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
-  } catch (error) {
-    console.error('Unable to start Deriv login:', error);
-    alert('Unable to start login. Please try again.');
-  }
+function login() {
+  window.location.href =
+    'https://deriv.com/?app_id=33Vxdb9YF1exXgyW3vms1&l=EN&brand=deriv&redirect_uri=https://www.digittoolderiv.site/app/dashboard';
 }
 
 function AppLayout() {
