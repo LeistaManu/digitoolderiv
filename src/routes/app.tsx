@@ -52,23 +52,22 @@ async function login() {
 
     const params = new URLSearchParams({
       response_type: "code",
-      client_id: "33Vxdb9YF1exXgyW3vms1",
-      redirect_uri:
-        "https://www.digittoolderiv.site/auth/callback",
-      scope: "trade",
+      client_id: "33Vxdb9Yf1exXgyW3vms1", // OAuth Client ID
+      redirect_uri: "https://digittoolderiv.site/auth/callback",
+      scope: "trade account_manage application_read payment",
       state,
       code_challenge: challenge,
       code_challenge_method: "S256",
     });
 
-    window.location.href =
-      `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+    window.location.assign(
+      `https://auth.deriv.com/oauth2/auth?${params.toString()}`
+    );
   } catch (error) {
     console.error("Unable to start Deriv login:", error);
     alert("Unable to start login. Please try again.");
   }
 }
-
 function AppLayout() {
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
