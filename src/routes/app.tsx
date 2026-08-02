@@ -51,23 +51,23 @@ async function login() {
     const { challenge, state } = await generatePKCE();
 
     const params = new URLSearchParams({
-      response_type: "code",
-      client_id: "340fKqgQxBtyfOpYwkRmA",
-      redirect_uri: "https://digittoolderiv.site/auth/callback",
-      scope: "trade account_manage application_read payment",
+      response_type: 'code',
+      client_id: '340fKqgQxBtyfOpYwkRmA',
+      redirect_uri: 'https://digittoolderiv.site/auth/callback',
+      scope: 'trade account_manage application_read payment',
       state,
       code_challenge: challenge,
-      code_challenge_method: "S256",
+      code_challenge_method: 'S256',
     });
 
-    window.location.assign(
-      `https://auth.deriv.com/oauth2/auth?${params.toString()}`
-    );
+    window.location.href =
+      `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
   } catch (error) {
-    console.error("Unable to start Deriv login:", error);
-    alert("Unable to start login. Please try again.");
+    console.error('Unable to start Deriv login:', error);
+    alert('Unable to start login. Please try again.');
   }
 }
+
 function AppLayout() {
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
@@ -116,6 +116,14 @@ function AppLayout() {
             >
               <Phone className="w-4 h-4 text-cyan-400" />
             </a>
+
+            <button
+  onClick={login}
+  className="px-4 py-1.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-semibold inline-flex items-center gap-1.5"
+>
+  <LogIn className="w-4 h-4" />
+  Login
+</button>
 
             {/* Signup */}
             <a
