@@ -1,68 +1,68 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+const APP_ID = "33Vxdb9YF1exXgyW3vms1";
+const REDIRECT_URI =
+  "https://www.digittoolderiv.site/auth/callback";
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-
-  if(req.method!=="POST"){
-
-    return res.status(405).end();
-
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
   }
 
-  const {code,verifier}=req.body;
+  try {
+    const { code, verifier } = req.body;
 
-  const body=new URLSearchParams({
-
-    grant_type:"authorization_code",
-
-    client_id:"33Vxdb9YF1exXgyW3vms1",
-
-    code,
-
-    code_verifier:verifier,
-
-    redirect_uri:"https://www.digittoolderiv.site/auth/callback"
-
-  });
-
-  const response=await fetch(
-
-    "https://auth.deriv.com/oauth2/token",
-
-    {
-
-      method:"POST",
-
-      headers:{
-
-        "Content-Type":"application/x-www-form-urlencoded"
-
-      },
-
-      body
-
+    if (!code) {
+      return res.status(400).json({
+        error: "Missing authorization code",
+      });
     }
 
-  );
+    if (!verifier) {
+      return res.status(400).json({
+        error: "Missing PKCE verifier",
+      });
+    }
 
-  const data=await response.json();
+    const response = await fetch(
+      "https://api.deriv.com/oauth2/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          grant_type: "authorization_code",
+          client_id: APP_ID,
+          code,
+          redirect_uri: REDIRECT_URI,
+          code_verifier: verifier,
+        }),
+      }
+    );
 
-  if(!response.ok){
+    const data = await response.json();
 
-    return res.status(400).json(data);
+    if (!response.ok) {
+      console.error("Deriv OAuth error:", data);
 
+      return res.status(response.status).json({
+        error: "Deriv OAuth token exchange failed",
+        details: data,
+      });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("OAuth callback error:", error);
+
+    return res.status(500).json({
+      error: "OAuth exchange failed",
+    });
   }
-
-  return res.json({
-
-    access_token:data.access_token,
-
-    expires_in:data.expires_in,
-
-    token_type:data.token_type
-
-  });
-
 }
