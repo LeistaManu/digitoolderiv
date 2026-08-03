@@ -27,7 +27,7 @@ export default async function handler(
     params.append("code_verifier", codeVerifier);
     params.append(
       "redirect_uri",
-      "https://digittoolderiv.site/auth/callback"
+      "https://digitoolderiv.vercel.app/auth/callback"
     );
 
     const response = await fetch(
