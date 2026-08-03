@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/auth/callback")({
-  component: Callback,
+  component: CallbackPage,
 });
 
-function Callback() {
+function CallbackPage() {
+  const [message, setMessage] = useState("Signing you in...");
+
   useEffect(() => {
-    async function completeLogin() {
+    const completeLogin = async () => {
       try {
         const params = new URLSearchParams(window.location.search);
 
@@ -16,92 +18,68 @@ function Callback() {
         const error = params.get("error");
 
         if (error) {
-          console.error("Deriv OAuth error:", error);
-          alert(`Login failed: ${error}`);
-          return;
+          throw new Error(error);
         }
 
         if (!code) {
-          alert("Login failed: authorization code is missing.");
-          return;
+          throw new Error("Authorization code missing.");
         }
 
-        const savedState = sessionStorage.getItem("oauth_state");
+        const storedState = sessionStorage.getItem("oauth_state");
 
-        if (!state || state !== savedState) {
-          alert("Login failed: invalid OAuth state.");
-          return;
+        if (!storedState || storedState !== state) {
+          throw new Error("Invalid OAuth state.");
         }
 
-        const verifier =
-          sessionStorage.getItem("pkce_verifier");
+        const codeVerifier =
+          sessionStorage.getItem("pkce_code_verifier");
 
-        if (!verifier) {
-          alert("Login failed: PKCE verifier is missing.");
-          return;
+        if (!codeVerifier) {
+          throw new Error("Missing PKCE code verifier.");
         }
 
-        const response = await fetch("/api/auth/callback", {
+        setMessage("Completing login...");
+
+        const response = await fetch("/api/auth/deriv", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             code,
-            verifier,
+            codeVerifier,
           }),
         });
 
+        if (!response.ok) {
+          throw new Error("Token exchange failed.");
+        }
+
         const data = await response.json();
 
-        if (!response.ok) {
-          console.error("Token exchange failed:", data);
+        localStorage.setItem("deriv_access_token", data.access_token);
 
-          alert(
-            data?.error ||
-              "Login failed while exchanging the authorization code."
-          );
-
-          return;
-        }
-
-        sessionStorage.removeItem("pkce_verifier");
         sessionStorage.removeItem("oauth_state");
-
-        if (!data.access_token) {
-          console.error("No access token returned:", data);
-
-          alert("Login failed: no access token was returned.");
-
-          return;
-        }
-
-        localStorage.setItem(
-          "deriv_token",
-          data.access_token
-        );
+        sessionStorage.removeItem("pkce_code_verifier");
 
         window.location.replace("/app/dashboard");
-      } catch (error) {
-        console.error("Login callback error:", error);
-
-        alert("Login failed. Please try again.");
+      } catch (err: any) {
+        console.error(err);
+        setMessage(err.message || "Login failed.");
       }
-    }
+    };
 
     completeLogin();
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0e1a] text-white">
+    <div className="min-h-screen flex items-center justify-center text-white bg-[#0a0e1a]">
       <div className="text-center">
-        <h2 className="text-xl font-semibold">
-          Signing you in...
-        </h2>
+        <h1 className="text-2xl font-bold mb-4">
+          Deriv Login
+        </h1>
 
-        <p className="mt-2 text-sm text-white/50">
-          Please wait while we connect your Deriv account.
-        </p>
+        <p>{message}</p>
       </div>
     </div>
   );
