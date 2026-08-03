@@ -9,7 +9,7 @@ function CallbackPage() {
   const [message, setMessage] = useState("Signing you in...");
 
   useEffect(() => {
-    async function finishLogin() {
+    async function completeLogin() {
       try {
         const params = new URLSearchParams(window.location.search);
 
@@ -23,19 +23,23 @@ function CallbackPage() {
         }
 
         if (!code) {
-          throw new Error("Missing authorization code.");
+          throw new Error("Authorization code missing.");
         }
 
         const savedState = sessionStorage.getItem("oauth_state");
 
-        if (!savedState || savedState !== state) {
-          throw new Error("OAuth state verification failed.");
+        if (!savedState) {
+          throw new Error("OAuth state not found.");
+        }
+
+        if (savedState !== state) {
+          throw new Error("Invalid OAuth state.");
         }
 
         const codeVerifier = sessionStorage.getItem("pkce_verifier");
 
         if (!codeVerifier) {
-          throw new Error("Missing PKCE code verifier.");
+          throw new Error("PKCE verifier missing.");
         }
 
         setMessage("Exchanging authorization code...");
@@ -51,12 +55,17 @@ function CallbackPage() {
           }),
         });
 
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || "Token exchange failed.");
-        }
-
         const data = await response.json();
+
+        console.log("Backend response:", data);
+
+        if (!response.ok) {
+          throw new Error(
+            data.error_description ||
+              data.error ||
+              JSON.stringify(data)
+          );
+        }
 
         localStorage.setItem(
           "deriv_access_token",
@@ -73,17 +82,21 @@ function CallbackPage() {
         sessionStorage.removeItem("oauth_state");
         sessionStorage.removeItem("pkce_verifier");
 
+        setMessage("Success! Redirecting...");
+
         window.location.replace("/app/dashboard");
       } catch (err) {
         console.error(err);
 
-        setMessage(
-          err instanceof Error ? err.message : "Login failed."
-        );
+        if (err instanceof Error) {
+          setMessage(err.message);
+        } else {
+          setMessage("Login failed.");
+        }
       }
     }
 
-    finishLogin();
+    completeLogin();
   }, []);
 
   return (
@@ -97,7 +110,7 @@ function CallbackPage() {
         fontFamily: "Inter, sans-serif",
       }}
     >
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", maxWidth: 600 }}>
         <div
           style={{
             width: 44,
@@ -110,24 +123,23 @@ function CallbackPage() {
           }}
         />
 
-        <div
+        <h2
           style={{
-            fontSize: 18,
-            fontWeight: 600,
+            fontSize: 22,
+            marginBottom: 10,
+          }}
+        >
+          Deriv Login
+        </h2>
+
+        <p
+          style={{
+            color: "#cbd5e1",
+            wordBreak: "break-word",
           }}
         >
           {message}
-        </div>
-
-        <div
-          style={{
-            marginTop: 8,
-            color: "#94a3b8",
-            fontSize: 14,
-          }}
-        >
-          Connecting your Deriv account...
-        </div>
+        </p>
       </div>
 
       <style>{`
