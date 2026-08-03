@@ -1,5 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+const CLIENT_ID = "340fKqgQxBtyfOpYwkRmA";
+const REDIRECT_URI =
+  "https://digitoolderiv.vercel.app/auth/callback";
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
@@ -13,24 +17,29 @@ export default async function handler(
   try {
     const { code, codeVerifier } = req.body;
 
-    if (!code || !codeVerifier) {
+    if (!code) {
       return res.status(400).json({
-        error: "Missing code or codeVerifier",
+        error: "Missing authorization code",
       });
     }
 
-    const params = new URLSearchParams();
+    if (!codeVerifier) {
+      return res.status(400).json({
+        error: "Missing PKCE code verifier",
+      });
+    }
 
-    params.append("grant_type", "authorization_code");
-    params.append("client_id", "340fKqgQxBtyfOpYwkRmA");
-    params.append("code", code);
-    params.append("code_verifier", codeVerifier);
-    params.append(
-      "redirect_uri",
-      "https://digitoolderiv.vercel.app/auth/callback"
-    );
+    const body = new URLSearchParams({
+      grant_type: "authorization_code",
+      client_id: CLIENT_ID,
+      code,
+      code_verifier: codeVerifier,
+      redirect_uri: REDIRECT_URI,
+    });
 
-    const response = await fetch(
+    console.log("Exchanging authorization code...");
+
+    const derivResponse = await fetch(
       "https://auth.deriv.com/oauth2/token",
       {
         method: "POST",
@@ -38,22 +47,35 @@ export default async function handler(
           "Content-Type":
             "application/x-www-form-urlencoded",
         },
-        body: params.toString(),
+        body: body.toString(),
       }
     );
 
-    const data = await response.json();
+    const data = await derivResponse.json();
 
-    if (!response.ok) {
-      return res.status(response.status).json(data);
+    console.log("Deriv Response:", data);
+
+    if (!derivResponse.ok) {
+      return res.status(derivResponse.status).json({
+        success: false,
+        deriv: data,
+      });
     }
 
-    return res.status(200).json(data);
-  } catch (error) {
-    console.error(error);
+    return res.status(200).json({
+      success: true,
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      expires_in: data.expires_in,
+      token_type: data.token_type,
+    });
+  } catch (err) {
+    console.error("OAuth Error:", err);
 
     return res.status(500).json({
-      error: "Internal server error",
+      success: false,
+      error:
+        err instanceof Error ? err.message : "Unknown server error",
     });
   }
 }
