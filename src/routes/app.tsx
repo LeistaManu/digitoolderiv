@@ -1,5 +1,5 @@
 import BalanceSwitcher from '@/components/BalanceSwitcher';
-import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
 import {
   LayoutDashboard,
   Blocks,
@@ -14,20 +14,21 @@ import {
   Phone,
   LogIn,
   UserPlus,
-} from "lucide-react";
-import { generatePKCE } from "@/lib/pkce";
-import { DollarRain } from "@/components/DollarRain";
+} from 'lucide-react';
 
-export const Route = createFileRoute("/app")({
+import { generatePKCE } from '@/lib/pkce';
+import { DollarRain } from '@/components/DollarRain';
+
+export const Route = createFileRoute('/app')({
   head: () => ({
     meta: [
       {
-        title: "Digittool App — Trading Workspace",
+        title: 'Digittool App — Trading Workspace',
       },
       {
-        name: "description",
+        name: 'description',
         content:
-          "The Digittool trading workspace: bots, charts, analysis, reports, risk tools and copy trading.",
+          'The Digittool trading workspace: bots, charts, analysis, reports, risk tools and copy trading.',
       },
     ],
   }),
@@ -35,16 +36,16 @@ export const Route = createFileRoute("/app")({
 });
 
 const nav = [
-  { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/app/bot-builder", label: "Bot Builder", icon: Blocks },
-  { to: "/app/charts", label: "Charts", icon: LineChart },
-  { to: "/app/trading-bots", label: "Trading Bots", icon: Bot },
-  { to: "/app/bulk-trader", label: "Bulk Trader", icon: Layers },
-  { to: "/app/analysis-tool", label: "Analysis Tool", icon: Activity },
-  { to: "/app/reports", label: "Reports", icon: FileBarChart },
-  { to: "/app/risk-calculator", label: "Risk Calculator", icon: Calculator },
-  { to: "/app/copy-trading", label: "Copy Trading", icon: Copy },
-  { to: "/app/dtrader", label: "DTrader", icon: TrendingUp },
+  { to: '/app/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/app/bot-builder', label: 'Bot Builder', icon: Blocks },
+  { to: '/app/charts', label: 'Charts', icon: LineChart },
+  { to: '/app/trading-bots', label: 'Trading Bots', icon: Bot },
+  { to: '/app/bulk-trader', label: 'Bulk Trader', icon: Layers },
+  { to: '/app/analysis-tool', label: 'Analysis Tool', icon: Activity },
+  { to: '/app/reports', label: 'Reports', icon: FileBarChart },
+  { to: '/app/risk-calculator', label: 'Risk Calculator', icon: Calculator },
+  { to: '/app/copy-trading', label: 'Copy Trading', icon: Copy },
+  { to: '/app/dtrader', label: 'DTrader', icon: TrendingUp },
 ];
 
 async function login() {
@@ -52,21 +53,21 @@ async function login() {
     const { challenge, state } = await generatePKCE();
 
     const params = new URLSearchParams({
-      response_type: "code",
-      client_id: "340fKqgQxBtyfOpYwkRmA",
-      redirect_uri: "https://digitoolderiv.vercel.app/auth/callback",
-      scope: "trade account_manage application_read payment",
+      response_type: 'code',
+      client_id: '340fKqgQxBtyfOpYwkRmA',
+      redirect_uri: 'https://www.digittoolderiv.site/auth/callback',
       state,
       code_challenge: challenge,
-      code_challenge_method: "S256",
+      code_challenge_method: 'S256',
     });
 
     window.location.href =
-      `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+      `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
   } catch (err) {
-    console.error(err);
+    console.error('Login failed', err);
   }
 }
+
 function AppLayout() {
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
@@ -99,16 +100,17 @@ function AppLayout() {
 
           <div className="flex items-center gap-2">
 
+            {/* Currency */}
             <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded bg-white/5 border border-white/10 text-xs">
-              <span className="font-semibold text-yellow-400">
-                KSH
-              </span>
+              <span className="font-semibold text-yellow-400">KSH</span>
               <span className="text-white/40">/</span>
-              <span className="font-semibold">
-                USD
-              </span>
+              <span className="font-semibold">USD</span>
             </div>
 
+            {/* Demo / Real balance switcher */}
+            <BalanceSwitcher />
+
+            {/* Phone */}
             <a
               href="tel:+254700000000"
               className="w-9 h-9 grid place-items-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10"
@@ -116,13 +118,14 @@ function AppLayout() {
               <Phone className="w-4 h-4 text-cyan-400" />
             </a>
 
+            {/* Login */}
             <button
-  onClick={login}
-  className="px-4 py-1.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-semibold inline-flex items-center gap-1.5"
->
-  <LogIn className="w-4 h-4" />
-  Login
-</button>
+              onClick={login}
+              className="px-4 py-1.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-sm font-semibold inline-flex items-center gap-1.5"
+            >
+              <LogIn className="w-4 h-4" />
+              Login
+            </button>
 
             {/* Signup */}
             <a
@@ -151,8 +154,8 @@ function AppLayout() {
                     to={n.to}
                     className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                       active
-                        ? "border-cyan-400 text-white"
-                        : "border-transparent text-white/70 hover:text-white hover:border-white/20"
+                        ? 'border-cyan-400 text-white'
+                        : 'border-transparent text-white/70 hover:text-white hover:border-white/20'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
