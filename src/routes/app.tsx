@@ -45,9 +45,25 @@ const nav = [
   { to: "/app/dtrader", label: "DTrader", icon: TrendingUp },
 ];
 
-function login() {
-  window.location.href =
-    'https://deriv.com/?app_id=340fKqgQxBtyfOpYwkRmA&l=EN&brand=deriv&redirect_uri=https://www.digittoolderiv.site/app/dashboard';
+async function login() {
+  try {
+    const { challenge, state } = await generatePKCE();
+
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: "340fKqgQxBtyfOpYwkRmA",
+      redirect_uri: "https://digittoolderiv.site/auth/callback",
+      scope: "trade account_manage application_read payment",
+      state,
+      code_challenge: challenge,
+      code_challenge_method: "S256",
+    });
+
+    window.location.href =
+      `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+  } catch (err) {
+    console.error(err);
+  }
 }
 function AppLayout() {
   const pathname = useRouterState({
