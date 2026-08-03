@@ -70,33 +70,33 @@ function useTypewriter(words: string[]) {
 function LandingPage() {
   const typed = useTypewriter(typewriterPhrases);
 
-  // Deriv Login
-  const startDerivLogin = async () => {
-    try {
-      const { challenge, state } = await generatePKCE();
+// Deriv Login
+const startDerivLogin = async () => {
+  try {
+    const { challenge, state } = await generatePKCE();
 
-      const params = new URLSearchParams({
-        response_type: 'code',
-        client_id: '340fKqgQxBtyfOpYwkRmA',
-        redirect_uri: 'https://digitoolderiv.vercel.app/auth/callback',
-        state,
-        code_challenge: challenge,
-        code_challenge_method: 'S256',
-      });
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: "340fKqgQxBtyfOpYwkRmA",
+      redirect_uri: "https://digitoolderiv.vercel.app/auth/callback",
+      scope: "trade account_manage application_read payment",
+      state,
+      code_challenge: challenge,
+      code_challenge_method: "S256",
+    });
 
-      window.location.href =
-        `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
-    } catch (error) {
-      console.error('Unable to start Deriv OAuth login:', error);
-    }
-  };
-
-  // Deriv Sign Up
-  const startDerivSignup = () => {
     window.location.href =
-      'https://deriv.com/signup/?app_id=340fKqgQxBtyfOpYwkRmA&l=EN&brand=deriv&redirect_uri=https://www.digittoolderiv.site/auth/callback';
-  };
+      `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
+  } catch (error) {
+    console.error("Unable to start Deriv OAuth login:", error);
+  }
+};
 
+// Deriv Sign Up
+const startDerivSignup = () => {
+  window.location.href =
+    "https://deriv.com/signup/?app_id=340fKqgQxBtyfOpYwkRmA&redirect_uri=https://digitoolderiv.vercel.app/auth/callback";
+};
   return (
     <div className="min-h-screen bg-[#0a0e1a] text-white overflow-x-hidden">
       {/* Navigation */}
