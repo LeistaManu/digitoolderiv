@@ -1,3 +1,4 @@
+import BalanceSwitcher from '@/components/BalanceSwitcher';
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
