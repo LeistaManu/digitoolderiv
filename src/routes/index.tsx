@@ -79,14 +79,16 @@ const startDerivLogin = async () => {
       response_type: "code",
       client_id: "340fKqgQxBtyfOpYwkRmA",
       redirect_uri: "https://digitoolderiv.vercel.app/auth/callback",
-      scope: "trade account_manage application_read payment",
       state,
       code_challenge: challenge,
       code_challenge_method: "S256",
     });
 
-    window.location.href =
-      `https://oauth.deriv.com/oauth2/authorize?${params.toString()}`;
+    const authUrl = `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+
+    console.log("Redirecting to:", authUrl);
+
+    window.location.assign(authUrl);
   } catch (error) {
     console.error("Unable to start Deriv OAuth login:", error);
   }
