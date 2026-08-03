@@ -71,10 +71,26 @@ function LandingPage() {
   const typed = useTypewriter(typewriterPhrases);
 
   // Deriv Login
-  const startDerivLogin = () => {
+ const startDerivLogin = async () => {
+  try {
+    const { challenge, state } = await generatePKCE();
+
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: "340fKqgQxBtyfOpYwkRmA",
+      redirect_uri: "https://digittoolderiv.site/auth/callback",
+      scope: "trade account_manage application_read payment",
+      state,
+      code_challenge: challenge,
+      code_challenge_method: "S256",
+    });
+
     window.location.href =
-      'https://deriv.com/?app_id=340fKqgQxBtyfOpYwkRmA&l=EN&brand=deriv&redirect_uri=https://www.digittoolderiv.site/app/dashboard';
-  };
+      `https://auth.deriv.com/oauth2/auth?${params.toString()}`;
+  } catch (error) {
+    console.error("Unable to start Deriv OAuth login:", error);
+  }
+};
 
   // Deriv Sign Up
   const startDerivSignup = () => {
