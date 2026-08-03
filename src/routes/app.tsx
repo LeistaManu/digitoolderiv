@@ -14,6 +14,7 @@ import {
   LogIn,
   UserPlus,
 } from "lucide-react";
+import { generatePKCE } from "@/lib/pkce";
 import { DollarRain } from "@/components/DollarRain";
 
 export const Route = createFileRoute("/app")({
