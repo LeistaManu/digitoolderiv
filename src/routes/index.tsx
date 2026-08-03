@@ -78,7 +78,7 @@ function LandingPage() {
       const params = new URLSearchParams({
         response_type: 'code',
         client_id: '340fKqgQxBtyfOpYwkRmA',
-        redirect_uri: 'https://www.digittoolderiv.site/auth/callback',
+        redirect_uri: 'https://digitoolderiv.vercel.app/auth/callback',
         state,
         code_challenge: challenge,
         code_challenge_method: 'S256',
