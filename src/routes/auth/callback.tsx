@@ -25,14 +25,15 @@ function CallbackPage() {
           throw new Error("Authorization code missing.");
         }
 
+        // Verify state
         const storedState = sessionStorage.getItem("oauth_state");
 
         if (!storedState || storedState !== state) {
           throw new Error("Invalid OAuth state.");
         }
 
-        const codeVerifier =
-          sessionStorage.getItem("pkce_code_verifier");
+        // Get PKCE verifier
+        const codeVerifier = sessionStorage.getItem("pkce_verifier");
 
         if (!codeVerifier) {
           throw new Error("Missing PKCE code verifier.");
@@ -40,6 +41,7 @@ function CallbackPage() {
 
         setMessage("Completing login...");
 
+        // Exchange authorization code for access token
         const response = await fetch("/api/auth/deriv", {
           method: "POST",
           headers: {
@@ -51,17 +53,32 @@ function CallbackPage() {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error("Token exchange failed.");
-        }
-
         const data = await response.json();
 
-        localStorage.setItem("deriv_access_token", data.access_token);
+        if (!response.ok) {
+          throw new Error(data.error || "Token exchange failed.");
+        }
 
+        // Save token
+        localStorage.setItem(
+          "deriv_access_token",
+          data.access_token
+        );
+
+        if (data.refresh_token) {
+          localStorage.setItem(
+            "deriv_refresh_token",
+            data.refresh_token
+          );
+        }
+
+        // Clean up
         sessionStorage.removeItem("oauth_state");
-        sessionStorage.removeItem("pkce_code_verifier");
+        sessionStorage.removeItem("pkce_verifier");
 
+        setMessage("Login successful!");
+
+        // Redirect to dashboard
         window.location.replace("/app/dashboard");
       } catch (err: any) {
         console.error(err);
@@ -73,13 +90,13 @@ function CallbackPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white bg-[#0a0e1a]">
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0e1a] text-white">
       <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-3xl font-bold mb-6">
           Deriv Login
         </h1>
 
-        <p>{message}</p>
+        <p className="text-lg">{message}</p>
       </div>
     </div>
   );
