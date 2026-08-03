@@ -46,14 +46,9 @@ const nav = [
 ];
 
 function login() {
-  const redirect = encodeURIComponent(
-    'https://www.digittoolderiv.site/app/dashboard'
-  );
-
   window.location.href =
-    `https://deriv.com/?app_id=33Vxdb9YF1exXgyW3vms1&l=EN&brand=deriv&redirect_uri=${redirect}`;
+    'https://deriv.com/?app_id=340fKqgQxBtyfOpYwkRmA&l=EN&brand=deriv&redirect_uri=https://www.digittoolderiv.site/app/dashboard';
 }
-
 function AppLayout() {
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
